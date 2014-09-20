@@ -1,5 +1,5 @@
 message("Keep calm while we are working ;)")
-
+require(reshape2)
 ##Reading test and training data
 tst_subj <- read.table("test/subject_test.txt")
 trn_subj <- read.table("train//subject_train.txt")
@@ -20,3 +20,6 @@ activities <- read.table("activity_labels.txt") ##Reading the list of activities
 stdmean$V1.1<-sapply(stdmean$V1.1, function(x) {x<-activities[which(activities==x),2]}) ##replacing the numbers with activity labels. Step 3 completed
 var_names <-c("Subject", "Activity", features[stdmean_cols]) ##Creating the vector of colNames
 colnames(stdmean) <- var_names ##Naming the columns -- step 4 complete! Almost done!
+
+molten <- melt(stdmean, id=c("Subject","Activity")) ##melting the data frame by Subject and Activity
+final <- dcast(molten,Subject + Activity ~ variable, mean) ##creating new dataset for point 5. Whew.
